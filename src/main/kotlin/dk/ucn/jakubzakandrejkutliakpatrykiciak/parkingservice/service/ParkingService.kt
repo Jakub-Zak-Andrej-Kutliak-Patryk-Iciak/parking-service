@@ -7,6 +7,7 @@ import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.RefreshDataRes
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.model.ParkingLot
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.repository.ParkingLotRepository
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.repository.ParkingProviderRepository
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
@@ -15,6 +16,8 @@ class ParkingService(
     private val parkingLotRepository: ParkingLotRepository,
     private val parkingProviderRepository: ParkingProviderRepository
 ) {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     fun findParkingLotsInArea(findParkingRequest: FindParkingRequest): FindParkingResponse {
         val parkingLots = parkingLotRepository.findByCoordinates(
             findParkingRequest.longitude - 0.1,
@@ -45,5 +48,7 @@ class ParkingService(
 
         parkingProvider.parkingLots.clear()
         parkingProvider.parkingLots.addAll(list)
+        parkingProviderRepository.save(parkingProvider)
+        logger.info("Data updated for ${parkingProvider.name}")
     }
 }

@@ -14,6 +14,6 @@ open class ParkingProvider(
     open var name: String? = null,
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "parkingProvider")
+    @OneToMany(mappedBy = "parkingProvider", cascade = [CascadeType.ALL])
     open var parkingLots: MutableSet<ParkingLot> = mutableSetOf()
 )
