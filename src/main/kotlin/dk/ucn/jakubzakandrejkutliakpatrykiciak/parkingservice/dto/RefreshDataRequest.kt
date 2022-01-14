@@ -1,0 +1,3 @@
+package dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto
+
+class RefreshDataRequest
