@@ -27,7 +27,11 @@ class MessageConsumer(
         val deliverCallback = DeliverCallback { consumerTag: String?, delivery: Delivery ->
             val deserialized = ObjectMapper().readValue(delivery.body, RefreshDataResponse::class.java)
             logger.info("Received response from ${refreshDataResponseQueue}. Elements: ${deserialized.parkingData.size}")
-            messageProcessor.process(deserialized)
+            try {
+                messageProcessor.process(deserialized)
+            } catch (e: RuntimeException) {
+                logger.error(e.message)
+            }
         }
         val channel = connection.createChannel()
         channel.queueDeclare(refreshDataResponseQueue, true, false, false, null)

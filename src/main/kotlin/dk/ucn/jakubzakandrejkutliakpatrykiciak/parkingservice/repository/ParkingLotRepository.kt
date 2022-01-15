@@ -4,7 +4,9 @@ import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.model.ParkingLot
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import javax.transaction.Transactional
 
+@Transactional
 interface ParkingLotRepository : JpaRepository<ParkingLot, Long> {
     @Query(value = """ select p from ParkingLot p
         where p.latitude <= :maxLat and p.latitude >= :minLat
