@@ -27,11 +27,6 @@ class ParkingServiceApplication(
 		parkingLotRepository.saveAll(listOf(
 			parkingLot
 		))
-
-		parkingLotRepository
-			.findByCoordinates(30.0, 30.0, 39.0, 39.0)
-			.map { lot: ParkingLot -> "" + lot.latitude + " " + lot.longitude }
-			.forEach(System.out::println)
 	}
 }
 
