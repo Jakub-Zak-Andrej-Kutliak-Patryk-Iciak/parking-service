@@ -5,8 +5,6 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
 
 @Entity
 open class ParkingLot {
@@ -14,9 +12,8 @@ open class ParkingLot {
     @GeneratedValue(strategy = IDENTITY)
     open var id: Long? = null
 
-    @ManyToOne
-    @JoinColumn
-    open var parkingProvider: ParkingProvider? = null
+    @Column(nullable = true)
+    open var parkingProvider: String? = null
 
     @Column(nullable = false)
     open var name: String? = null

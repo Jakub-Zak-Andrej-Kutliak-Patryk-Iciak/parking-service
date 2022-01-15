@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
+	kotlin("plugin.serialization") version "1.6.10"
 }
 
 group = "dk.ucn.jakubzakandrejkutliakpatrykiciak"
@@ -18,13 +19,14 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web:2.6.2")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.6.2")
-	implementation("org.springframework.boot:spring-boot-starter-amqp:2.6.2")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 	implementation("mysql:mysql-connector-java:8.0.25")
 	implementation("org.springframework.boot:spring-boot-configuration-processor:2.6.2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:2.6.2")
+	implementation("com.rabbitmq:amqp-client:5.14.0")
 }
 
 tasks.withType<KotlinCompile> {

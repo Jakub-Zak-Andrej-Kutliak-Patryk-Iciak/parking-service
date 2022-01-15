@@ -15,4 +15,7 @@ interface ParkingLotRepository : JpaRepository<ParkingLot, Long> {
         @Param("minLat") minLat: Double,
         @Param("maxLat") maxLat: Double,
     ): List<ParkingLot>
+
+    fun findByParkingProvider(parkingProvider: String): List<ParkingLot>
+    fun deleteAllByParkingProvider(parkingProvider: String)
 }
