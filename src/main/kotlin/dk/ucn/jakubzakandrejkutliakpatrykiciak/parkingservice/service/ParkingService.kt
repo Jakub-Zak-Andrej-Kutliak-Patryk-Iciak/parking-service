@@ -1,6 +1,5 @@
 package dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.service
 
-import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.FindParkingRequest
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.FindParkingResponse
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.ParkingLotDto
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.RefreshDataResponse
@@ -16,19 +15,21 @@ class ParkingService(
 ) {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    fun findParkingLotsInArea(findParkingRequest: FindParkingRequest): FindParkingResponse {
+    fun findParkingLotsInArea(longitude: Double, latitude: Double): FindParkingResponse {
         val parkingLots = parkingLotRepository.findByCoordinates(
-            findParkingRequest.longitude - 0.1,
-            findParkingRequest.longitude + 0.1,
-            findParkingRequest.latitude - 0.1,
-            findParkingRequest.latitude + 0.1
+            longitude - 0.1,
+            longitude + 0.1,
+            latitude - 0.1,
+            latitude + 0.1
         ).stream().map { parking -> ParkingLotDto(
             parking.parkingProvider,
             parking.name!!,
             parking.longitude!!,
-            parking.latitude!!
+            parking.latitude!!,
+            parking.capacity!!,
+            parking.busy!!
         ) }.collect(Collectors.toList())
-        return FindParkingResponse(findParkingRequest.correlationId, parkingLots)
+        return FindParkingResponse(parkingLots)
     }
 
     fun updateParkingData(refreshDataResponse: RefreshDataResponse) {
@@ -39,6 +40,8 @@ class ParkingService(
             parking.parkingProvider = parkingDto.parkingProvider
             parking.longitude = parkingDto.longitude
             parking.latitude = parkingDto.latitude
+            parking.capacity = parkingDto.capacity
+            parking.busy = parkingDto.busy
             list.add(parking)
         }
 
