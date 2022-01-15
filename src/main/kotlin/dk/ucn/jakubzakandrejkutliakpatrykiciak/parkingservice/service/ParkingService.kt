@@ -40,6 +40,8 @@ class ParkingService(
             parking.parkingProvider = parkingDto.parkingProvider
             parking.longitude = parkingDto.longitude
             parking.latitude = parkingDto.latitude
+            parking.capacity = parkingDto.capacity
+            parking.busy = parkingDto.busy
             list.add(parking)
         }
 
