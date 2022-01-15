@@ -5,6 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FindParkingResponse(
-    @JsonProperty("correlationId") val correlationId: String,
     @JsonProperty("parkingData") val parkingData: List<ParkingLotDto>
 )

@@ -8,5 +8,7 @@ data class ParkingLotDto(
     @JsonProperty("parkingProvider") val parkingProvider: String?,
     @JsonProperty("name") val name: String,
     @JsonProperty("longitude") val longitude: Double,
-    @JsonProperty("latitude") val latitude: Double
+    @JsonProperty("latitude") val latitude: Double,
+    @JsonProperty("capacity") val capacity: Int,
+    @JsonProperty("busy") val busy: Int
 )

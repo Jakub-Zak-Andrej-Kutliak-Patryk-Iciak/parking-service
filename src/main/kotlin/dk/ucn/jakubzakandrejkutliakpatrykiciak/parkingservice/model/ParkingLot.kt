@@ -23,4 +23,10 @@ open class ParkingLot {
 
     @Column(nullable = false)
     open var latitude: Double? = null
+
+    @Column(nullable = true)
+    open var capacity: Int? = null
+
+    @Column(nullable = true)
+    open var busy: Int? = null
 }

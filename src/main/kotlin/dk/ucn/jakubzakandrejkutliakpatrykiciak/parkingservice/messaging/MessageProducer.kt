@@ -12,19 +12,11 @@ import org.springframework.stereotype.Component
 
 @Component
 class MessageProducer(
-    @Value("\${broker.findParkingResponse}") private val findParkingResponseQueue: String,
     @Value("\${broker.refreshDataRequest}") private val refreshDataRequestQueue: String,
     connection: Connection
 ) {
     private val channel: Channel
     private val logger = LoggerFactory.getLogger(this.javaClass)
-
-    fun publish(message: FindParkingResponse) {
-        val ow: ObjectWriter = ObjectMapper().writer().withDefaultPrettyPrinter()
-        val json: String = ow.writeValueAsString(message)
-        channel.basicPublish("", findParkingResponseQueue, null, json.toByteArray())
-        logger.info("Published FindParkingResponse, ${message.parkingData.size} element(s)")
-    }
 
     fun publish(message: RefreshDataRequest) {
         val ow: ObjectWriter = ObjectMapper().writer().withDefaultPrettyPrinter()
