@@ -6,15 +6,16 @@ import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.ParkingLotDto
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.RefreshDataResponse
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.model.ParkingLot
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.repository.ParkingLotRepository
-import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.repository.ParkingProviderRepository
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
 @Service
 class ParkingService(
-    private val parkingLotRepository: ParkingLotRepository,
-    private val parkingProviderRepository: ParkingProviderRepository
+    private val parkingLotRepository: ParkingLotRepository
 ) {
+    private val logger = LoggerFactory.getLogger(this.javaClass)
+
     fun findParkingLotsInArea(findParkingRequest: FindParkingRequest): FindParkingResponse {
         val parkingLots = parkingLotRepository.findByCoordinates(
             findParkingRequest.longitude - 0.1,
@@ -22,7 +23,7 @@ class ParkingService(
             findParkingRequest.latitude - 0.1,
             findParkingRequest.latitude + 0.1
         ).stream().map { parking -> ParkingLotDto(
-            parking.parkingProvider?.name,
+            parking.parkingProvider,
             parking.name!!,
             parking.longitude!!,
             parking.latitude!!
@@ -31,19 +32,18 @@ class ParkingService(
     }
 
     fun updateParkingData(refreshDataResponse: RefreshDataResponse) {
-        val parkingProvider = parkingProviderRepository.getById(refreshDataResponse.parkingProviderId)
-
         val list = mutableListOf<ParkingLot>()
         for (parkingDto in refreshDataResponse.parkingData) {
             val parking = ParkingLot()
             parking.name = parkingDto.name
-            parking.parkingProvider = parkingProvider
+            parking.parkingProvider = parkingDto.parkingProvider
             parking.longitude = parkingDto.longitude
             parking.latitude = parkingDto.latitude
             list.add(parking)
         }
 
-        parkingProvider.parkingLots.clear()
-        parkingProvider.parkingLots.addAll(list)
+        parkingLotRepository.deleteAllByParkingProvider(refreshDataResponse.parkingProvider)
+        parkingLotRepository.saveAll(list)
+        logger.info("Data updated for ${refreshDataResponse.parkingProvider}")
     }
 }
