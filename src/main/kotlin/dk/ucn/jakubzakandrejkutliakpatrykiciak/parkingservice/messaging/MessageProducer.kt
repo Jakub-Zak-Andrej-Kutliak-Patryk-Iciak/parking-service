@@ -8,6 +8,7 @@ import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.FindParkingRes
 import dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto.RefreshDataRequest
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 @Component
@@ -15,6 +16,11 @@ class MessageProducer(
     @Value("\${broker.refreshDataRequest}") private val refreshDataRequestQueue: String,
     connection: Connection
 ) {
+    @Scheduled(fixedRate = 30000)
+    fun sendRefresh() {
+        publish(RefreshDataRequest())
+    }
+
     private val channel: Channel
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
