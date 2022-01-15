@@ -1,9 +1,11 @@
 package dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto
 
-import java.util.*
+import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class FindParkingRequest(
-    val longitude: Double,
-    val latitude: Double,
-    val correlationId: UUID
+    @JsonProperty("longitude") val longitude: Double,
+    @JsonProperty("latitude") val latitude: Double,
+    @JsonProperty("correlationId") val correlationId: String
 )

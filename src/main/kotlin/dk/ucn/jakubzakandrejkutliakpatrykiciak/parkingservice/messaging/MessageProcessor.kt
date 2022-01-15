@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component
 @Component
 class MessageProcessor(
     val parkingService: ParkingService,
-    val messagePublisher: MessagePublisher
+    val messageProducer: MessageProducer
 ) {
 
     fun process(findParkingRequest: FindParkingRequest) {
         val parkingLots = parkingService.findParkingLotsInArea(findParkingRequest)
-        messagePublisher.publish(parkingLots)
+        messageProducer.publish(parkingLots)
     }
 
     fun process(refreshDataRequest: RefreshDataRequest) {
-        messagePublisher.publish(refreshDataRequest)
+        messageProducer.publish(refreshDataRequest)
     }
 
     fun process(refreshDataResponse: RefreshDataResponse) {

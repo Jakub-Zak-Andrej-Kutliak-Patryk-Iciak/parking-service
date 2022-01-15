@@ -1,8 +1,10 @@
 package dk.ucn.jakubzakandrejkutliakpatrykiciak.parkingservice.dto
 
-import java.util.*
+import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class FindParkingResponse(
-    val correlationId: UUID,
-    val parkingData: List<ParkingLotDto>
+    @JsonProperty("correlationId") val correlationId: String,
+    @JsonProperty("parkingData") val parkingData: List<ParkingLotDto>
 )
